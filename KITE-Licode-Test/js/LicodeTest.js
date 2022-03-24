@@ -3,6 +3,10 @@ const {OpenUrlStep, GetStatsStep, LeaveRoomStep} = require('./steps');
 const {PublishedVideoCheck, SubscribedVideoCheck, PublishedAudioOnlyCheck, SubscribedAudioOnlyCheck} = require('./checks');
 const {MainPage} = require('./pages');
 
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 class LicodeTest extends KiteBaseTest {
   constructor(name, kiteConfig) {
     super(name, kiteConfig);
@@ -15,7 +19,8 @@ class LicodeTest extends KiteBaseTest {
       this.driver = await WebDriverFactory.getDriver(this.capabilities);
 
       this.page = new MainPage(this.driver);
-      let openUrlStep = new OpenUrlStep(this);
+      let openUrlStep = new OpenUrlStep(this, randomIntFromInterval(1, this.payload.roomsCount));
+      
       await openUrlStep.execute(this);
 
       if (this.licodeOptions && !this.licodeOptions.onlyAudio) {

@@ -9,13 +9,14 @@
   "tests": [
     {
       "name": "Licode BasicExample Test %ts",
-      "tupleSize": 2,
+      "tupleSize": 4,
       "permute": false,
       "description": "Test publishing and subscribing to videos in BasicExample",
       "testImpl": "LicodeTest.js",
       "payload" : {
-        "url": "https://basicexample?forceStart=1",
+        "url": "http://localhost:3001",
         "testTimeout": 60,
+        "roomsCount": 2,
         "getStats" : {
           "enabled": true,
           "statsCollectionTime": 5,
@@ -29,11 +30,8 @@
   "clients": [
     {
       "browserName": "chrome",
-      "platform": "LINUX"
-    },
-    {
-      "browserName": "firefox",
-      "platform": "LINUX"
+      "platform": "localhost",
+      "headless": false
     }
   ]
 }

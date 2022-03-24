@@ -1,7 +1,7 @@
 const {TestStep} = require('kite-common');
 
 class OpenUrlStep extends TestStep {
-  constructor(kiteBaseTest) {
+  constructor(kiteBaseTest, roomId) {
     super();
     this.driver = kiteBaseTest.driver;
     this.timeout = kiteBaseTest.timeout;
@@ -10,6 +10,7 @@ class OpenUrlStep extends TestStep {
     this.page = kiteBaseTest.page;
     this.reporter = kiteBaseTest.reporter;
     this.options = kiteBaseTest.licodeOptions;
+    this.roomId = roomId;
   }
 
   stepDescription() {
@@ -17,6 +18,7 @@ class OpenUrlStep extends TestStep {
   }
 
   async step() {
+    this.url += '/?room=' + this.roomId;
     await this.page.open(this);
     if (this.options) {
       this.reporter.textAttachment(this.report, "Options set", JSON.stringify(this.options), "plain");

@@ -4,7 +4,7 @@ const videos = By.css('video');
 const audios = By.css('audio');
 
 const getPeerConnectionsScript = function() {
-  return "window.peers = []; const getPcs = () => { var pc = localStream; window.peers.push(pc.pc.peerConnection); room.remoteStreams.forEach((stream) => {if(stream.pc) {window.peers.push(stream.pc.peerConnection);}});}; getPcs();";
+  return "window.peers = []; const getPcs = () => { var pc = localStream; window.peers.push(pc.peerConnection); room.remoteStreams.forEach((stream) => {if(stream.pc) {window.peers.push(stream.pc.peerConnection);}});}; getPcs();";
 };
 
 const elements = {
