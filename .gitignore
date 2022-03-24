@@ -7,13 +7,13 @@ yarn-error.log*
 lerna-debug.log*
 
 #reports
-kite-allure-reports/
+KITE-Licode-Test/kite-allure-reports/
 
 #temp
-js/temp/
+KITE-Licode-Test/js/temp/
 
 #target
-target/
+KITE-Licode-Test/target/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
