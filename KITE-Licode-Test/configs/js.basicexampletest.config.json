@@ -9,14 +9,15 @@
   "tests": [
     {
       "name": "Licode BasicExample Test %ts",
-      "tupleSize": 4,
+      "tupleSize": 1,
       "permute": false,
       "description": "Test publishing and subscribing to videos in BasicExample",
       "testImpl": "LicodeTest.js",
       "payload" : {
         "url": "http://localhost:3001",
-        "testTimeout": 60,
+        "testTimeout": 120,
         "roomsCount": 2,
+        "stayInRoomSec": 60,
         "getStats" : {
           "enabled": true,
           "statsCollectionTime": 5,

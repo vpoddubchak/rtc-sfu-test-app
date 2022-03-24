@@ -43,6 +43,8 @@ class LicodeTest extends KiteBaseTest {
         await getStatsStep.execute(this);
       }
 
+      await new Promise(r => setTimeout(r, this.payload.stayInRoomSec * 1000));
+
       let leaveRoomStep = new LeaveRoomStep(this);
       await leaveRoomStep.execute(this);
 
