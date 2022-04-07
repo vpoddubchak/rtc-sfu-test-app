@@ -21,6 +21,8 @@ class LicodeTest extends KiteBaseTest {
       this.page = new MainPage(this.driver);
       let openUrlStep = new OpenUrlStep(this, randomIntFromInterval(1, this.payload.roomsCount), false);
       
+      await new Promise(r => setTimeout(r, randomIntFromInterval(50, 600)));
+
       await openUrlStep.execute(this);
 
       if (this.licodeOptions && !this.licodeOptions.onlyAudio) {
@@ -35,8 +37,8 @@ class LicodeTest extends KiteBaseTest {
         await subscribedAudioOnlyCheck.execute(this);
       }
 
-      let screenshotStep = new ScreenshotStep(this);
-      await screenshotStep.execute(this);
+//      let screenshotStep = new ScreenshotStep(this);
+//      await screenshotStep.execute(this);
 
       if (this.getStats) {
         let getStatsStep = new GetStatsStep(this);
