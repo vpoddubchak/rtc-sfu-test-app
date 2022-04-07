@@ -19,7 +19,7 @@ class LicodeTest extends KiteBaseTest {
       this.driver = await WebDriverFactory.getDriver(this.capabilities);
 
       this.page = new MainPage(this.driver);
-      let openUrlStep = new OpenUrlStep(this, randomIntFromInterval(1, this.payload.roomsCount));
+      let openUrlStep = new OpenUrlStep(this, randomIntFromInterval(1, this.payload.roomsCount), false);
       
       await openUrlStep.execute(this);
 

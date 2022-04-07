@@ -1,0 +1,39 @@
+{
+    "name": "Licode Test %ts",
+    "grids": [
+      {
+        "type": "local",
+        "url": "http://localhost:4444/wd/hub"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Licode WebSocket test %ts",
+        "tupleSize": 100,
+        "permute": false,
+        "description": "Test web socket connections",
+        "testImpl": "WsTest.js",
+        "payload" : {
+          "url": "https://valeriy-rtc-sfu-demo.ext.dev.bizzabo.com",
+          "testTimeout": 150,
+          "roomsCount": 1,
+          "stayInRoomSec": 120,
+          "getStats" : {
+            "enabled": false,
+            "statsCollectionTime": 5,
+            "statsCollectionInterval": 1,
+            "peerConnections": ["window.peers"],
+            "selectedStats" : ["inbound-rtp", "outbound-rtp", "candidate-pair", "stream"]
+          }
+        }
+      }
+    ],
+    "clients": [
+      {
+        "browserName": "chrome",
+        "platform": "localhost",
+        "headless": true
+      }
+    ]
+  }
+  
