@@ -14,20 +14,20 @@
 export INSTALL_BROWSERS=TRUE
 
 # Set to TRUE if this is a full desktop environment, FALSE if it's without any display
-export DESKTOP_ENVIRONMENT=TRUE
+export DESKTOP_ENVIRONMENT=FALSE
 
 # Set to TRUE to use localhost or FALSE to use the host's IP address
 export LOCALHOST=TRUE
 
 # ChromeDriver and GeckoDriver versions
-export GECKO_VERSION=v0.28.0
-export CHROMEDRIVER_VERSION=87.0.4280.88
+export GECKO_VERSION=v0.30.0
+export CHROMEDRIVER_VERSION=97.0.4692.71
 
 # Selenium version
 export SELENIUM_VERSION_SHORT=3.141
 export SELENIUM_VERSION=3.141.59
 
 # Browser versions
-export FIREFOX_VERSION=83
-export CHROME_VERSION=87
+export FIREFOX_VERSION=96
+export CHROME_VERSION=97
 
