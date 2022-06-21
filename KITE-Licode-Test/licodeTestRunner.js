@@ -1,23 +1,24 @@
 const child_process = require('child_process');
 const { KiteConfig, KiteTest } = require('./utils/testUtils')
+const fs = require('fs');
+var bodyParser = require('body-parser')
+const express = require('express');
+const { fstat } = require('fs');
+const app = express();
+const port = 5001;
 
-const configs = [];
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 const configPath = './configs'
-
-let gridUrl = process.env.GRID_URL;
-let licodeUrl = process.env.LICODE_URL;
-if (!gridUrl || !licodeUrl) {
-  console.error('Both GRID_URL and LICODE_URL environment variables are needed to run tests');
-  process.exit(1);
-}
-gridUrl = `http://${gridUrl}:4444/wd/hub`
-licodeUrl = `https://${licodeUrl}?forceStart=1`
-
-console.log(`Configuring tests with gridUrl: ${gridUrl} and licodeUrl ${licodeUrl}`);
+let configIndex = 1;
 
 const runTestConfig = (configFile) => {
   console.log('Will run test', configFile);
-  var script =`r ${configFile}`; 
+  var script =`kite_r ${configFile}`; 
   result = child_process.execSync(script,  {
     maxBuffer: 1000 * 1024,
     shell: '/bin/bash',
@@ -26,41 +27,50 @@ const runTestConfig = (configFile) => {
   console.log('Result ', result.toString());
 };
 
-const runAllTests = () => {
-  let configNum = 1;
-  configs.forEach((config) => {
-    const configName = `${configPath}/config${configNum}.json`
-    config.writeToFile(configName);
-    runTestConfig(configName);
-    configNum++;
-  });
+const removeTestConfig = (configFile) => {
+  fs.rmSync(configFile);
 };
 
-const firefoxAndChromeConfig = new KiteConfig('Firefox and Chrome Test Suite');
-firefoxAndChromeConfig.addGridHub(gridUrl)
-firefoxAndChromeConfig.addFirefox();
-firefoxAndChromeConfig.addChrome();
+app.post('/startTest', async (req, res) => {
+  try {
+    const config = new KiteConfig('KiteConfig');
+    config.addGridHub('http://localhost:4444/wd/hub');
+    if (req.body.chrome) {
+      config.addChrome();
+    }
+    if (req.body.firefox) {
+      config.addFirefox();
+    }
 
-const testNoSimulcast = new KiteTest('No Simulcast', licodeUrl);
-const testSimulcast = new KiteTest('Simulcast', licodeUrl);
-testSimulcast.setSimulcast(true);
-const testAudioOnly = new KiteTest('Test audio only', licodeUrl);
-testAudioOnly.setOnlyAudio(true);
-const testP2P = new KiteTest('Test p2p', licodeUrl);
-testP2P.setType('p2p');
-firefoxAndChromeConfig.addTest(testNoSimulcast);
-firefoxAndChromeConfig.addTest(testSimulcast);
-firefoxAndChromeConfig.addTest(testAudioOnly);
-firefoxAndChromeConfig.addTest(testP2P);
+    const test = new KiteTest(req.body.name, req.body.url);
+    test.setRoomsCount(req.body.roomsCount);
+    test.setRoomsCount(req.body.stayInRoomSec);
+    test.setOnlyAudio(req.body.parameters.onlyAudio);
+    test.setSimulcast(req.body.parameters.simulcast);
+    if (req.body.parameters.p2p) {
+      test.setType('p2p');
+    }
+    config.addTest(test);
 
-const onlyChromeConfig = new KiteConfig('Only Chrome Test Suite');
-onlyChromeConfig.addGridHub(gridUrl)
-onlyChromeConfig.addChrome();
-const testSinglePCSimulcast = new KiteTest('Simulcast and SinglePC', licodeUrl);
-testSinglePCSimulcast.setSimulcast(true);
-testSinglePCSimulcast.setSinglePC(true);
-onlyChromeConfig.addTest(testSinglePCSimulcast);
+    const configName = `${configPath}/config${configIndex}.json`
+    config.writeToFile(configName);
+    configIndex++;
 
-configs.push(firefoxAndChromeConfig);
-configs.push(onlyChromeConfig);
-runAllTests();
+    if (req.body.sync) {
+      runTestConfig(configName);
+      res.send(req.body);
+    } else {
+      res.send(req.body);
+      runTestConfig(configName);
+    }
+
+    removeTestConfig(configName);
+  } catch (e) {
+    res.status(400).send(e.toString())
+  }
+
+});
+
+app.listen(port, function() {
+  console.log(`Example app listening on port ${port}!`)
+});

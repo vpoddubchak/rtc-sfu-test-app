@@ -47,7 +47,7 @@ class KiteTest {
     console.log(`Building test name: ${name}, url: ${licodeUrl}`);
     this.test = {};
     this.test.name = `${name} %ts`
-    this.test.tupleSize = 2;
+    this.test.tupleSize = 1;
     this.test.permute = false
     this.test.description = 'Licode test for BasicExample'
     this.test.testImpl = 'LicodeTest.js'
@@ -56,14 +56,16 @@ class KiteTest {
         simulcast: false,
         singlePC: false,
         onlyAudio: false,
-        room: 'kiteroom',
+        room: '',
         mediaConfiguration: 'default',
         type: 'erizo',
       },
       url: ''+licodeUrl,
       testTimeout: 60,
+      roomsCount: 10,
+      stayInRoomSec: 10,
       getStats: {
-        enabled: true,
+        enabled: false,
         statsCollectionTime: 5,
         statsCollectionInterval: 1,
         peerConnections: ['window.peers'],
@@ -73,6 +75,12 @@ class KiteTest {
   }
   setTupleSize(size) {
     this.test.tupleSize = size;
+  }
+  setRoomsCount(count){
+    this.test.payload.roomsCount = count;
+  }
+  setStayInRoomSec(sec){
+    this.test.payload.stayInRoomSec = sec;
   }
   setDescription(description) {
     this.description = description;
