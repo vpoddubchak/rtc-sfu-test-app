@@ -111,3 +111,20 @@ dist
 
 # TernJS port file
 .tern-port
+
+.idea
+logs
+*.iml
+target
+node_modules
+temp
+node
+*reports/
+localgrid
+package-lock.json
+.classpath
+.settings
+.project
+.DS_Store
+results
+/localGrid
